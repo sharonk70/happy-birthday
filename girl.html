@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Happy Birthday, Nandini! 🎉</title>
+  <meta name="description" content="A tiny, personal birthday website—crafted with love."/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f172a;--muted:#94a3b8;--text:#e5e7eb;
+      --accent:#f472b6;--accent-2:#22d3ee;--border:rgba(255,255,255,.12);
+      --ring:rgba(244,114,182,.35);
+      /* WhatsApp dark-esque bubble colors */
+      --wa-in:#1f2c34;     /* incoming (left) */
+      --wa-out:#005c4b;    /* outgoing (right) */
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;height:100%;
+      background:
+        radial-gradient(1200px 600px at 100% -10%, rgba(34,211,238,.15), transparent 60%),
+        radial-gradient(1000px 500px at -10% 110%, rgba(244,114,182,.15), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      font-family:'Poppins',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+    }
+    a{color:var(--accent)}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* Cards & titles */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,.25)
+    }
+    .section-title{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+    .dot{width:10px;height:10px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 0 4px var(--ring)}
+
+    /* Header */
+    header{display:grid;gap:18px;padding:36px 0 18px}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:8px 12px;border-radius:999px;font-size:14px;color:var(--muted)}
+    .title{font-family:'Pacifico', cursive; font-size:clamp(30px,6vw,64px); line-height:1.05; margin:0}
+    .subtitle{color:var(--muted);max-width:60ch;font-weight:400}
+    .hero-photo{border-radius:20px;width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--border)}
+
+    /* Lists / grids */
+    .list{display:grid;gap:10px;padding-left:0;list-style:none}
+    .list li{background:rgba(255,255,255,.04);padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.06)}
+    .grid{display:grid;gap:18px}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+
+    /* Gallery */
+    .gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+  gap: 10px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 220px;        /* all equal height */
+  object-fit: cover;    /* crop neatly like Instagram */
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+@media (max-width: 700px) {
+  .gallery {
+    grid-template-columns: 1fr 1fr; /* 2 per row on phones */
+  }
+  .gallery img {
+    height: 160px; /* smaller height on mobile */
+  }
+}
+
+    /* Timeline */
+    .timeline{position:relative;padding-left:18px}
+    .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--accent), var(--accent-2))}
+    .t-item{position:relative;margin:14px 0;padding-left:14px}
+    .t-item::before{content:"";position:absolute;left:-2px;top:6px;width:10px;height:10px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+
+    /* Inputs & buttons */
+    .pill{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);cursor:pointer;color:var(--text)}
+    input[type="text"], input[type="number"]{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:10px;color:var(--text);width:100%}
+
+    /* Unlock + chat bubbles */
+    .reveal{display:grid;gap:10px}
+    .reveal .secret{display:none;margin-top:8px}
+    .reveal .secret.show{display:block}
+
+    .chat{display:flex;flex-direction:column;gap:10px}
+    .bubble{
+      max-width:72%;padding:10px 14px;border-radius:16px;border:1px solid rgba(0,0,0,.12);
+      color:#ecf2f3; position:relative; line-height:1.4
+    }
+    .left{align-self:flex-start;background:var(--wa-in); border-color:#0b141a}
+    .right{align-self:flex-end;background:var(--wa-out); border-color:#003c33}
+    .meta{font-size:12px;color:#c3d1d2;margin-bottom:6px;font-weight:600}
+    .bubble.left::after{
+      content:""; position:absolute; left:-6px; bottom:0;
+      border-width:8px 8px 0 0; border-style:solid;
+      border-color: var(--wa-in) transparent transparent transparent;
+      filter: drop-shadow(-1px 1px 0 #0b141a);
+    }
+    .bubble.right::after{
+      content:""; position:absolute; right:-6px; bottom:0;
+      border-width:8px 0 0 8px; border-style:solid;
+      border-color: var(--wa-out) transparent transparent transparent;
+      filter: drop-shadow(1px 1px 0 #003c33);
+    }
+
+    /* Canvas */
+    canvas{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;display:block;width:100%;max-width:900px}
+
+    /* Footer & floating button */
+    footer{opacity:.85;color:var(--muted);padding:36px 0 60px;text-align:center}
+    .float-btn{position:fixed;right:18px;bottom:18px;z-index:50}
+    .float-btn button{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#0b1020;font-weight:800;padding:14px 18px;border-radius:999px;box-shadow:0 14px 40px rgba(244,114,182,.35)}
+
+    /* Heart animation */
+    .heart{position:fixed;bottom:-10px;left:50%;width:12px;height:12px;background:linear-gradient(180deg,var(--accent),var(--accent-2));transform:translateX(-50%) rotate(45deg);border-radius:2px;opacity:.9;z-index:9999}
+    .heart:before,.heart:after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:inherit}
+    .heart:before{left:-6px;top:0}.heart:after{left:0;top:-6px}
+    @keyframes floatUp{0%{transform:translateY(0) scale(1) rotate(45deg);opacity:1}100%{transform:translateY(-120vh) scale(.8) rotate(45deg);opacity:0}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">🎂 Birthday Special · For <span id="herNameInline">Nandini</span></span>
+      <h1 class="title">Happy Birthday, <span id="herName">Nandini</span> 💖</h1>
+      <p class="subtitle">I made this tiny website just for you. Scroll for memories, reasons I love you, a hidden message only <em>you</em> can unlock, and our exponential love graph.</p>
+      <img class="hero-photo" src="https://i.postimg.cc/ZRbGV1MT/Whats-App-Image-2025-09-30-at-9-39-57-PM.jpg" alt="Us together"/>
+    </header>
+
+    <!-- Reasons -->
+    <section class="card">
+      <h3 class="section-title"><span class="dot"></span>💘 10 Reasons I Love You</h3>
+      <ol class="list" id="reasons">
+        <li>You always care deeply.</li>
+        <li>You gathered the courage to confess.</li>
+        <li>You notice the smallest details.</li>
+        <li>Your cute angry face (sorry 😜).</li>
+        <li>You are my “Panda” 🐼.</li>
+        <li>You share your world with me.</li>
+        <li>You see a future with me.</li>
+        <li>You are my constant spark.</li>
+        <li>You trust me with your secrets.</li>
+        <li>You make love feel effortless.</li>
+      </ol>
+    </section>
+
+    <!-- Timeline -->
+    <section class="card">
+      <h3 class="section-title"><span class="dot"></span>🗓️ Our Little Timeline</h3>
+      <div class="timeline" id="timeline">
+        <div class="t-item"><strong>We met</strong> — The day everything got better.</div>
+        <div class="t-item"><strong>First date</strong> — Fries, laughs, and shy smiles.</div>
+        <div class="t-item"><strong>Our first trip</strong> — Above the clouds, literally and emotionally.</div>
+        <div class="t-item"><strong>Today</strong> — Your birthday! 🎉</div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section style="margin-top:18px" class="card">
+      <h3 class="section-title"><span class="dot"></span>📸 Little Gallery</h3>
+      
+      <div class="gallery">
+        <img src="https://i.postimg.cc/XXSxD5Y1/Whats-App-Image-2025-09-30-at-9-43-22-PM.jpg" alt="confission"/>
+        <img src="https://i.postimg.cc/j5BGtLjr/Whats-App-Image-2025-09-30-at-9-43-21-PM-1.jpg" alt="memory 2"/>
+        <img src="https://i.postimg.cc/bNxKfYfc/Whats-App-Image-2025-09-30-at-9-43-21-PM.jpg" alt="memory 3"/>
+        <img src="https://i.postimg.cc/RFJDs4T5/Whats-App-Image-2025-09-30-at-9-40-46-PM.jpg" alt="memory 4"/>
+        <img src="https://i.postimg.cc/GmMgbHMM/Whats-App-Image-2025-09-30-at-9-41-48-PM.jpg" alt="memory 5"/>
+        <img src="https://i.postimg.cc/wvNw5F6q/Whats-App-Image-2025-09-30-at-9-40-12-PM.jpg" alt="memory 6"/>
+      </div>
+    </section>
+
+    <!-- Secret unlock + Chat Memories -->
+    <section style="margin-top:18px" class="card">
+      <h3 class="section-title"><span class="dot"></span>🔒 A message only you can unlock</h3>
+      <div class="reveal">
+        <label for="pass">Type your nickname here:</label>
+        <input id="pass" placeholder="e.g guess karo"/>
+        <button id="revealBtn" class="pill">Reveal</button>
+
+        <div id="secret" class="secret">
+          <p>My favourite place is anywhere with you. I’m proud of you—today and every day. Happy Birthday, my love. 💗</p>
+          <section style="margin-top:18px" class="card">
+            <h3 class="section-title"><span class="dot"></span>💬 Our Favourite Chat Memories</h3>
+            <div id="memoriesGrid" class="chat"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exponential Love -->
+    <section style="margin-top:18px" class="card">
+      <h3 class="section-title"><span class="dot"></span>📈 Exponential Love</h3>
+      <p class="subtitle">Because my love for you grows faster than e<sup>t</sup>. Personalise and hit draw.</p>
+      <div class="grid grid-2" style="align-items:end">
+        <div>
+          <label class="subtitle">Your name</label>
+          <input id="youNameInput" value="Sharon"/>
+          <label class="subtitle">Her name</label>
+          <input id="herNameInput" value="Nandini"/>
+          <label class="subtitle">Days (since 25 Oct 2023)</label>
+          <input id="daysInput" type="number" value="120" min="10" max="2000"/>
+          <label class="subtitle">Growth (k)</label>
+          <input id="kInput" type="number" value="0.35" step="0.05" min="0.05" max="2"/>
+          <div style="display:flex;gap:10px;margin-top:10px">
+            <button id="drawLove" class="pill">Draw</button>
+            <button id="saveLove" class="pill">Download PNG</button>
+          </div>
+        </div>
+        <div>
+          <canvas id="loveChart" width="900" height="520"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <footer>Made with 💖 by <span id="yourName">Sharon</span> · <span id="year"></span></footer>
+  </div>
+
+  <!-- Floating confetti -->
+  <div class="float-btn"><button id="confettiBtn">🎊 Celebrate</button></div>
+
+  <script>
+    // ===== SETTINGS =====
+    const SETTINGS = {
+      herName: "Nandini",
+      herNicknamePassword: "motu",
+      yourName: "Sharon",
+      confessionDateISO: "2023-10-25"
+    };
+
+    // ===== INIT TEXT =====
+    const $ = s => document.querySelector(s);
+    $("#herName").textContent = SETTINGS.herName;
+    $("#herNameInline").textContent = SETTINGS.herName;
+    $("#yourName").textContent = SETTINGS.yourName;
+    $("#year").textContent = new Date().getFullYear();
+
+    // ===== CONFETTI & HEARTS =====
+    function sparkle(root, count=80){
+      for(let i=0;i<count;i++){
+        const s = document.createElement('span');
+        const size = Math.random()*6+4;
+        s.style.cssText =
+          `position:fixed;left:${Math.random()*100}vw;top:-10px;width:${size}px;height:${size}px;`+
+          `background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;`+
+          `transform:rotate(${Math.random()*360}deg);opacity:.9;z-index:9999;`;
+        root.appendChild(s);
+        const endY = innerHeight + 20;
+        const dur = Math.random()*1000 + 2600;
+        s.animate([{ transform:s.style.transform, top:'-10px' }, { transform:`rotate(${Math.random()*720}deg)`, top:endY+'px' }],
+                  { duration:dur, easing:'cubic-bezier(.2,.8,.2,1)' });
+        setTimeout(()=> s.remove(), dur);
+      }
+    }
+    function heartsBurst(n=24){
+      for(let i=0;i<n;i++){
+        const h=document.createElement('div');
+        h.className='heart';
+        h.style.left = (10+Math.random()*80)+'vw';
+        h.style.animation = `floatUp ${2500+Math.random()*1500}ms ease-out forwards`;
+        document.body.appendChild(h);
+        setTimeout(()=> h.remove(), 4200);
+      }
+    }
+    document.getElementById('confettiBtn').addEventListener('click', ()=> sparkle(document.body, 140));
+
+    // ===== CHAT MEMORIES (render on unlock) =====
+    const curatedMemories = [
+      { who: 'Nandini', text: 'If you are knowing everything about me then tuje ye bhi Pta hoga ki I had a crush on you.' },
+      { who: 'Sharon',  text: 'Seriously, I had thought too yaar.' },
+      { who: 'Nandini', text: 'Then too it is my first confession to anyone.' },
+      { who: 'Sharon',  text: 'Actually I too liked you.' },
+      { who: 'Nandini', text: 'Now I’m feeling ki late night talks itni special kyu hoti — just because you find the right one ❤️' },
+      { who: 'Sharon',  text: 'Think like ya raat kabhi khatam nah ho 😂' },
+      { who: 'Nandini', text: 'Papa ke liye roz pray krti hu… ab se tere liye bhi — ki tu jaldi recover ho jaye.' },
+      { who: 'Sharon',  text: 'Thanks yaar 🥹❤️ Tu kitni acchi panda hai 🥹' },
+      { who: 'Nandini', text: 'Because I don’t think so I will get the second buddy in my life — and I don’t want to.' },
+      { who: 'Sharon',  text: "Even I don't want either now yaar 🥹" },
+      { who: 'Nandini', text: 'We will never lose each other. ❤️' },
+      { who: 'Sharon',  text: 'Aur pata nahi kyu esa lagta tha yaar — you’re the one. ❤️' },
+      { who: 'Nandini', text: 'Same pinch ❤️' }
+    ];
+    function renderCuratedMemories(){
+      const root = document.getElementById('memoriesGrid');
+      if(!root || root.dataset.rendered) return;
+      curatedMemories.forEach((m, i)=>{
+        const b = document.createElement('div');
+        b.className = 'bubble ' + (i%2===0 ? 'left' : 'right');
+        b.innerHTML = `<div class="meta">${m.who}</div><div>“${m.text.replace(/"/g,'&quot;')}”</div>`;
+        root.appendChild(b);
+      });
+      root.dataset.rendered = '1';
+    }
+
+    // ===== SECRET REVEAL =====
+    document.getElementById('revealBtn').addEventListener('click', ()=>{
+      const val = document.getElementById('pass').value.trim().toLowerCase();
+      if(!val) return alert('Type the nickname 🙂');
+      if(val === SETTINGS.herNicknamePassword.toLowerCase()){
+        document.getElementById('secret').classList.add('show');
+        renderCuratedMemories();
+        heartsBurst(32);
+        sparkle(document.body, 80);
+      } else {
+        alert('Almost! Try another nickname 💡');
+      }
+    });
+
+    // ===== EXPONENTIAL LOVE CHART =====
+    const c = document.getElementById('loveChart');
+    const ctx = c.getContext('2d');
+
+    function drawLoveChart({your='You', her='Your Love', days=120, k=0.35}){
+      const W=c.width, H=c.height;
+      ctx.clearRect(0,0,W,H);
+      const pad={l:70,r:20,t:70,b:60}, plotW=W-pad.l-pad.r, plotH=H-pad.t-pad.b;
+
+      // axes
+      ctx.lineWidth=1; ctx.strokeStyle='rgba(255,255,255,.35)';
+      ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,H-pad.b); ctx.lineTo(W-pad.r,H-pad.b); ctx.stroke();
+
+      // confession marker at day 0
+      try{
+        const label = new Date(SETTINGS.confessionDateISO+'T00:00:00')
+          .toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'});
+        ctx.save();
+        ctx.setLineDash([6,4]);
+        ctx.strokeStyle='rgba(34,211,238,.6)';
+        ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, H-pad.b); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle='#c7f9ff'; ctx.font='14px ui-sans-serif, system-ui';
+        ctx.fillText(`Confession — ${label}`, pad.l+8, pad.t+18);
+        ctx.restore();
+      }catch(e){}
+
+      // labels
+      ctx.fillStyle='#e5e7eb'; ctx.font='16px ui-sans-serif, system-ui';
+      ctx.fillText('Days together', W/2 - 50, H - 20);
+      ctx.save(); ctx.translate(22, H/2 + 40); ctx.rotate(-Math.PI/2); ctx.fillText('Love (ever-growing units)', 0, 0); ctx.restore();
+
+      // title
+      ctx.font='bold 22px ui-sans-serif, system-ui';
+      ctx.fillText(`Exponential Love: ${your} → ${her} ❤`, pad.l, 42);
+
+      // data
+      const n=240, t=Array.from({length:n},(_,i)=>i*(days/(n-1)));
+      const A=1, L=t.map(tt=>A*Math.exp(k*(tt/days)));
+      const min=Math.min(...L), max=Math.max(...L);
+      const x=d=>pad.l+(d/days)*plotW;
+      const y=v=>pad.t+(1-((v-min)/(max-min)))*plotH;
+
+      // line
+      const grad=ctx.createLinearGradient(pad.l,pad.t,W-pad.r,H-pad.b);
+      grad.addColorStop(0,'#f472b6'); grad.addColorStop(1,'#22d3ee');
+      ctx.strokeStyle=grad; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.moveTo(x(t[0]), y(L[0]));
+      for(let i=1;i<n;i++) ctx.lineTo(x(t[i]), y(L[i]));
+      ctx.stroke();
+
+      // milestones + note
+      ctx.fillStyle='#e5e7eb'; ctx.font='18px serif';
+      for(let i=0;i<6;i++){ const tt=(i/5)*days; const lv=A*Math.exp(k*(tt/days)); ctx.fillText('❤', x(tt)-6, y(lv)+6); }
+      const tt=days*0.7, lv=A*Math.exp(k*(tt/days));
+      ctx.font='16px ui-sans-serif, system-ui'; ctx.fillText('I love you more each day ❤', x(tt)-120, y(lv)-16);
+
+      // grid
+      ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=1;
+      for(let i=0;i<=5;i++){ const gx=pad.l+i*(plotW/5); ctx.beginPath(); ctx.moveTo(gx,pad.t); ctx.lineTo(gx,H-pad.b); ctx.stroke(); }
+      for(let i=0;i<=5;i++){ const gy=pad.t+i*(plotH/5); ctx.beginPath(); ctx.moveTo(pad.l,gy); ctx.lineTo(W-pad.r,gy); ctx.stroke(); }
+    }
+
+    // initial draw anchored to confession date
+    (function initChart(){
+      const CONFESSION = new Date(SETTINGS.confessionDateISO + 'T00:00:00');
+      const TODAY = new Date();
+      const daysSince = Math.max(10, Math.ceil((TODAY - CONFESSION)/86400000));
+
+      document.getElementById('youNameInput').value = SETTINGS.yourName;
+      document.getElementById('herNameInput').value = SETTINGS.herName;
+      document.getElementById('daysInput').value = daysSince;
+
+      drawLoveChart({your: SETTINGS.yourName, her: SETTINGS.herName, days: daysSince, k: 0.35});
+    })();
+
+    // controls
+    document.getElementById('drawLove').addEventListener('click', ()=>{
+      drawLoveChart({
+        your: document.getElementById('youNameInput').value || 'Sharon',
+        her:  document.getElementById('herNameInput').value || 'Nandini',
+        days: Math.max(10, Math.min(2000, Number(document.getElementById('daysInput').value) || 120)),
+        k:    Math.max(0.05, Math.min(2, Number(document.getElementById('kInput').value) || 0.35))
+      });
+    });
+    document.getElementById('saveLove').addEventListener('click', ()=>{
+      const a=document.createElement('a');
+      a.download = `exponential-love-${Date.now()}.png`;
+      a.href = document.getElementById('loveChart').toDataURL('image/png');
+      a.click();
+    });
+  </script>
+</body>
+</html>
