@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Surprise Unlock 🎁</title>
+  <style>
+    body {
+      margin:0; font-family: Arial, sans-serif; background:#0f172a; color:#e5e7eb;
+      display:flex; justify-content:center; align-items:center; height:100vh; text-align:center;
+    }
+    .card {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:20px;
+      padding:40px;
+      max-width:600px;
+      box-shadow:0 8px 30px rgba(0,0,0,.3);
+    }
+    h1 {margin-bottom:15px}
+    .count {
+      display:flex; justify-content:center; gap:15px;
+      font-size:22px; font-weight:600; margin:20px 0;
+    }
+    .pill {
+      padding:10px 16px;
+      border-radius:12px;
+      background:rgba(255,255,255,.12);
+    }
+    .hidden {display:none}
+    button {
+      margin-top:20px; padding:12px 24px; font-size:1em; font-weight:bold;
+      border:none; border-radius:12px; cursor:pointer;
+      background:linear-gradient(90deg,#f472b6,#22d3ee); color:#0f172a;
+      box-shadow:0 5px 20px rgba(34,211,238,.3);
+    }
+    button:hover {opacity:0.9}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎉 Big Surprise Awaits 🎉</h1>
+    <p id="msg">This page will unlock at <b>2 Oct 2025, 00:00</b>.</p>
+    <div id="countdown" class="count">
+      <span class="pill">--d</span>
+      <span class="pill">--h</span>
+      <span class="pill">--m</span>
+      <span class="pill">--s</span>
+    </div>
+    <div id="unlocked" class="hidden">
+      <p>💖 Happy Birthday, Nandini 💖<br>
+      From 25th Oct 2023 to today, every day with you has been special.  
+      This is just the beginning of your surprise…</p>
+      <button onclick="goNext()">Next ➡️</button>
+    </div>
+  </div>
+
+  <script>
+    const UNLOCK_ISO = "2025-10-02T00:00:00"; 
+    const unlockTime = new Date(UNLOCK_ISO);
+    const targetURL = "https://sharonk70.github.io/happy-birthday/girl2 (2).html";
+
+    function updateCountdown(){
+      const now = new Date();
+      const diff = unlockTime - now;
+      const items = document.querySelectorAll('#countdown .pill');
+      if(diff <= 0){
+        // Unlock message
+        document.getElementById('countdown').classList.add('hidden');
+        document.getElementById('msg').textContent = "✨ It's time! Your surprise is unlocked.";
+        document.getElementById('unlocked').classList.remove('hidden');
+        return;
+      }
+      const d = Math.floor(diff/86400000);
+      const h = Math.floor((diff%86400000)/3600000);
+      const m = Math.floor((diff%3600000)/60000);
+      const s = Math.floor((diff%60000)/1000);
+      const vals = [`${d}d`,`${h}h`,`${m}m`,`${s}s`];
+      items.forEach((el,i)=> el.textContent=vals[i]);
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    function goNext(){
+      window.location.href = targetURL;
+    }
+  </script>
+</body>
+</html>
